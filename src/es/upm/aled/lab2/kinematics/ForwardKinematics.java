@@ -31,6 +31,9 @@ public class ForwardKinematics {
 
 	// Private helper method that implements the recursive algorithm
 	private static Node computePositions(Segment link, double baseX, double baseY, double accumulatedAngle) {
+		// Medida de tiempos: instante de inicio
+		long startTime = System.nanoTime();
+
 		// Codigo comun: angulo acumulado de este segmento
 		double angle = link.getAngle() + accumulatedAngle;
 
@@ -43,6 +46,10 @@ public class ForwardKinematics {
 
 		// Caso base: si el segmento no tiene hijos se devuelve el Node sin hijos
 		if(link.getChildren().size() == 0) {
+			long runningTime = System.nanoTime() - startTime;
+			System.out.println("Tiempo de computePositions para un segmento con "
+			                   + link.getChildren().size() + " hijos: "
+			                   + runningTime + " nanosegundos");
 			return node;
 		}
 
@@ -51,6 +58,10 @@ public class ForwardKinematics {
 			Node childNode = computePositions(child, x, y, angle);
 			node.addChild(childNode);
 		}
+		long runningTime = System.nanoTime() - startTime;
+		System.out.println("Tiempo de computePositions para un segmento con "
+		                   + link.getChildren().size() + " hijos: "
+		                   + runningTime + " nanosegundos");
 		return node;
 	}
 }
